@@ -1,4 +1,4 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.tweetish;
 
 import com.raizlabs.android.dbflow.annotation.Database;
 
