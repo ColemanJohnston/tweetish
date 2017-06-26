@@ -1,5 +1,6 @@
 package com.codepath.apps.tweetish;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -28,8 +29,9 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	@Override
 	public void onLoginSuccess() {
 		Toast.makeText(this,"Success",Toast.LENGTH_LONG).show();
-		// Intent i = new Intent(this, PhotosActivity.class);
-		// startActivity(i);
+
+		 Intent i = new Intent(this, TimelineActivity.class);
+		startActivity(i);
 	}
 
 	// OAuth authentication flow failed, handle the error
