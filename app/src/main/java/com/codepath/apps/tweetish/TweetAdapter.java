@@ -44,6 +44,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         holder.tvUsername.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
         holder.tvScreenName.setText("@" + tweet.user.screenName);
+        holder.tvRTimestamp.setText(tweet.getRelativeTimeAgo(tweet.createdAt));//TODO:clean this up by making a single method call
         Glide.with(context)
              .load(tweet.user.profileImageUrl)
              .into(holder.ivProfileImage);
@@ -60,6 +61,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         public TextView tvUsername;
         public TextView tvBody;
         public TextView tvScreenName;
+        public TextView tvRTimestamp;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -67,6 +69,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
             tvUsername = (TextView) itemView.findViewById(R.id.tvUsername);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);
+            tvRTimestamp = (TextView) itemView.findViewById(R.id.tvRTimeStamp);
         }
     }
 }
