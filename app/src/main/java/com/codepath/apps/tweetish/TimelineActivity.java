@@ -38,7 +38,6 @@ public class TimelineActivity extends AppCompatActivity {
         tweetAdapter = new TweetAdapter(tweets);
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(tweetAdapter);
-
         populateTimeline();
     }
 

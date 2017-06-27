@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.codepath.apps.tweetish.models.Tweet;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
     private List<Tweet> mTweets;
+    Context context;
 
     public TweetAdapter(List<Tweet> tweets){
         mTweets = tweets;
@@ -26,7 +28,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
+        context = parent.getContext();
 
         LayoutInflater inflater = LayoutInflater.from(context);
 
@@ -41,6 +43,10 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
         holder.tvUsername.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
+
+        Glide.with(context)
+             .load(tweet.user.profileImageUrl)
+             .into(holder.ivProfileImage);
     }
 
     @Override
