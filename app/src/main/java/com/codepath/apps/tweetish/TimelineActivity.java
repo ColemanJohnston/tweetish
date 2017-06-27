@@ -4,6 +4,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.codepath.apps.tweetish.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -39,6 +43,21 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(tweetAdapter);
         populateTimeline();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_timeline,menu);
+        return true;
+    }
+
+    public void onComposeAction(MenuItem mi){
+        //this.startActivity(new Intent(this,/*new activity*/.class));
+        Toast.makeText(this,"compose was pressed",Toast.LENGTH_SHORT).show();
     }
 
     private void populateTimeline(){
