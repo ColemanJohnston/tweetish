@@ -24,12 +24,18 @@
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/tvBody"
+        android:id="@+id/tvScreenName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/ivProfileImage"
+        android:text="\@screen name"
         android:layout_below="@+id/tvUsername"
-        android:layout_toEndOf="@+id/ivProfileImage"
-        android:text="TextView"
         android:layout_alignStart="@+id/tvUsername" />
+
+    <TextView
+        android:id="@+id/tvBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_below="@id/tvScreenName"
+        android:layout_alignLeft="@id/tvScreenName"/>
 </RelativeLayout>

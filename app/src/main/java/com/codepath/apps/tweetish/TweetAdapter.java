@@ -43,7 +43,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
         holder.tvUsername.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
-
+        holder.tvScreenName.setText("@" + tweet.user.screenName);
         Glide.with(context)
              .load(tweet.user.profileImageUrl)
              .into(holder.ivProfileImage);
@@ -59,12 +59,14 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         public ImageView ivProfileImage;
         public TextView tvUsername;
         public TextView tvBody;
+        public TextView tvScreenName;
 
         public ViewHolder(View itemView){
             super(itemView);
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             tvUsername = (TextView) itemView.findViewById(R.id.tvUsername);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
+            tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);
         }
     }
 }
