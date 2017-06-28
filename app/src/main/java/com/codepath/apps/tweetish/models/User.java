@@ -2,11 +2,12 @@ package com.codepath.apps.tweetish.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 /**
  * Created by colemanmav on 6/26/17.
  */
-
+@Parcel
 public class User {
 
     public String name;
