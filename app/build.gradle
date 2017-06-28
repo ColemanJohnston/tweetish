@@ -9,7 +9,6 @@ android {
         minSdkVersion 17
         targetSdkVersion 25
     }
-
     // Related to https://github.com/scribejava/scribejava/issues/480
     // Scribe expects Java 7 or this custom Apache library
     lintOptions {
@@ -22,6 +21,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+}
+
+ext {
+    supportLibVersion = '25.3.1'  // variable that can be referenced to keep support libs consistent
 }
 
 repositories {
@@ -48,4 +51,7 @@ dependencies {
 
     compile 'org.parceler:parceler-api:1.1.6'
     annotationProcessor 'org.parceler:parceler:1.1.6'
+
+    compile "com.android.support:appcompat-v7:${supportLibVersion}"
+    compile "com.android.support:design:${supportLibVersion}"
 }
