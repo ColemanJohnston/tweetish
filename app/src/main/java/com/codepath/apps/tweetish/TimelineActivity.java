@@ -2,6 +2,7 @@ package com.codepath.apps.tweetish;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,7 +32,7 @@ public class TimelineActivity extends AppCompatActivity {
     TweetAdapter tweetAdapter;
     ArrayList<Tweet> tweets;
     RecyclerView rvTweets;
-
+    private SwipeRefreshLayout swipeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,16 @@ public class TimelineActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
+
+        this.swipeContainer = (SwipeRefreshLayout) findViewById(R.id.srlTimeline);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+
+            @Override
+            public void onRefresh() {
+                populateTimeline();
+            }
+        });
+
     }
 
     @Override
@@ -89,7 +100,7 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 log.d("TwitterClient", response.toString());
-
+                tweetAdapter.clear();
                 for(int i = 0; i < response.length();++i){
                     try{
                         Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
@@ -100,6 +111,7 @@ public class TimelineActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+                swipeContainer.setRefreshing(false);
             }
 
             @Override
