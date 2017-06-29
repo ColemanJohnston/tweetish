@@ -1,10 +1,12 @@
 package com.codepath.apps.tweetish;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,8 +24,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
     private List<Tweet> mTweets;
     Context context;
 
-    public TweetAdapter(List<Tweet> tweets){
+    public TweetAdapter(List<Tweet> tweets, TimelineActivity timelineActivity){
         mTweets = tweets;
+        context = timelineActivity;//TODO: ask about this context stuff
     }
 
     public void clear(){
@@ -38,7 +41,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        context = parent.getContext();
+        context = parent.getContext();//TODO: ask about this context stuff
 
         LayoutInflater inflater = LayoutInflater.from(context);
 
@@ -65,13 +68,14 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         return mTweets.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public ImageView ivProfileImage;
         public TextView tvUsername;
         public TextView tvBody;
         public TextView tvScreenName;
         public TextView tvRTimestamp;
+        public ImageButton ibRetweet;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -80,6 +84,28 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);
             tvRTimestamp = (TextView) itemView.findViewById(R.id.tvRTimeStamp);
+            ibRetweet = (ImageButton) itemView.findViewById(R.id.ibRetweet);
+            ibRetweet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onRetweet(v);
+                }
+            });
+        }
+
+        @Override
+        public void onClick(View v) {
+            //TODO: Make detail view and go on this function
+        }
+
+        public void onRetweet(View v){//TODO: ask about restyling the way that I
+            Intent i = new Intent(context,ComposeActivity.class);
+
+            i.putExtra("replyUsername",tvScreenName.getText().toString());
+
+            TimelineActivity timelineActivity = (TimelineActivity) context;
+
+            timelineActivity.startActivityForResult(i,TimelineActivity.REQUEST_CODE);
         }
     }
 }

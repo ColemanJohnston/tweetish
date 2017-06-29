@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.tweetish.models.Tweet;
@@ -30,6 +31,8 @@ public class ComposeActivity extends AppCompatActivity {
     private Button btnSend;
     Context context;
     MenuItem miActionProgressItem;
+    TextView tvReplyUsername;
+    private String replyUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,15 @@ public class ComposeActivity extends AppCompatActivity {
         context = this;
         etTweet = (EditText) findViewById(R.id.etTweet);
         btnSend = (Button) findViewById(R.id.btnSend);
+        tvReplyUsername = (TextView) findViewById(R.id.tvReplyUsername);
+        replyUsername = getIntent().getStringExtra("replyUsername");
+        if(replyUsername == null){
+            replyUsername = "";
+        }
+        else{
+            tvReplyUsername.setText("Replying to " + replyUsername);
+            replyUsername += " "; //TODO: check if this space messes up the 140 characters thing
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -51,7 +63,7 @@ public class ComposeActivity extends AppCompatActivity {
                 showProgressBar();
 
                 TwitterClient client = new TwitterClient(context);
-                client.sendTweet(etTweet.getText().toString(), new JsonHttpResponseHandler(){
+                client.sendTweet(replyUsername + etTweet.getText().toString(), new JsonHttpResponseHandler(){
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         hideProgressBar();

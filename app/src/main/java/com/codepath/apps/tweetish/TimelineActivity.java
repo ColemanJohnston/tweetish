@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.codepath.apps.tweetish.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -45,7 +44,7 @@ public class TimelineActivity extends AppCompatActivity {
 
         rvTweets = (RecyclerView) findViewById(R.id.rvTweet);
         tweets = new ArrayList<>();
-        tweetAdapter = new TweetAdapter(tweets);
+        tweetAdapter = new TweetAdapter(tweets, this);
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(tweetAdapter);
 
@@ -87,7 +86,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     public void onComposeAction(MenuItem mi){
         this.startActivityForResult(new Intent(this,ComposeActivity.class),REQUEST_CODE);
-        Toast.makeText(this,"compose was pressed",Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this,"compose was pressed",Toast.LENGTH_SHORT).show();
     }
 
     @Override //TODO: finish this method once compose activity is finished
