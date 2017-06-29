@@ -2,6 +2,7 @@ package com.codepath.apps.tweetish;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.codepath.apps.tweetish.models.Tweet;
@@ -33,6 +35,7 @@ public class TimelineActivity extends AppCompatActivity {
     ArrayList<Tweet> tweets;
     RecyclerView rvTweets;
     private SwipeRefreshLayout swipeContainer;
+    MenuItem miActionProgressItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +43,11 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
         client = TwitterApp.getRestClient();
 
-
         rvTweets = (RecyclerView) findViewById(R.id.rvTweet);
         tweets = new ArrayList<>();
         tweetAdapter = new TweetAdapter(tweets);
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(tweetAdapter);
-        populateTimeline();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -60,7 +61,22 @@ public class TimelineActivity extends AppCompatActivity {
                 populateTimeline();
             }
         });
+    }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        miActionProgressItem = menu.findItem(R.id.miActionProgress);
+        ProgressBar v = (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
+        populateTimeline();
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    public void showProgressBar(){
+        miActionProgressItem.setVisible(true);
+    }
+
+    public void hideProgressBar(){
+        miActionProgressItem.setVisible(false);
     }
 
     @Override
@@ -90,6 +106,7 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     private void populateTimeline(){
+        showProgressBar();
         client.getHomeTimeline(new JsonHttpResponseHandler() {
 
             @Override
@@ -99,6 +116,7 @@ public class TimelineActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                hideProgressBar();
                 log.d("TwitterClient", response.toString());
                 tweetAdapter.clear();
                 for(int i = 0; i < response.length();++i){
@@ -116,20 +134,26 @@ public class TimelineActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                hideProgressBar();
                 log.d("TwitterClient", responseString);
                 throwable.printStackTrace();
+                swipeContainer.setRefreshing(false);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                hideProgressBar();
                 log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
+                swipeContainer.setRefreshing(false);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                hideProgressBar();
                 log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
+                swipeContainer.setRefreshing(false);
             }
         });
     }
