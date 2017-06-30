@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.tweetish.models.Tweet;
@@ -89,15 +90,15 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                 @Override
                 public void onClick(View v) {
                     onRetweet(v);
-
                 }
             });
+            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             Intent i = new Intent(context,DetailViewActivity.class);
-
+            Toast.makeText(context,"view was clicked: " + tvUsername.getText(), Toast.LENGTH_SHORT);
             context.startActivity(i);
         }
 
