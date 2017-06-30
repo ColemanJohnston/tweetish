@@ -89,13 +89,16 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                 @Override
                 public void onClick(View v) {
                     onRetweet(v);
+
                 }
             });
         }
 
         @Override
         public void onClick(View v) {
-            //TODO: Make detail view and go on this function
+            Intent i = new Intent(context,DetailViewActivity.class);
+
+            context.startActivity(i);
         }
 
         public void onRetweet(View v){//TODO: ask about restyling the way that I
