@@ -9,10 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.tweetish.models.Tweet;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -97,9 +98,17 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
         @Override
         public void onClick(View v) {
-            Intent i = new Intent(context,DetailViewActivity.class);
-            Toast.makeText(context,"view was clicked: " + tvUsername.getText(), Toast.LENGTH_SHORT);
-            context.startActivity(i);
+            int position = getAdapterPosition();
+
+            if(position != RecyclerView.NO_POSITION){
+                Tweet tweet = mTweets.get(position);
+
+                Intent intent = new Intent(context,DetailViewActivity.class);
+
+                intent.putExtra("tweet", Parcels.wrap(tweet));
+
+                context.startActivity(intent);
+            }
         }
 
         public void onRetweet(View v){//TODO: ask about restyling the way that I
