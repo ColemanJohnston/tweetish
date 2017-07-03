@@ -98,5 +98,9 @@ public class TimelineActivity extends AppCompatActivity {
         }
     }
 
+    public void onProfileView(MenuItem item){
+        //launch the profile view
+
+    }
 
 }
