@@ -11,21 +11,15 @@ import android.view.MenuItem;
 import android.widget.ProgressBar;
 
 import com.codepath.apps.tweetish.models.Tweet;
-import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.parceler.Parcels;
 
-import cz.msebera.android.httpclient.Header;
 import fragments.TweetsListFragment;
-
-import static com.loopj.android.http.AsyncHttpClient.log;
 
 public class TimelineActivity extends AppCompatActivity {
 
     public static int REQUEST_CODE = 10;//TODO:find if this is a good request code
-    private TwitterClient client;
+
 
     private SwipeRefreshLayout swipeContainer;
     MenuItem miActionProgressItem;
@@ -36,7 +30,7 @@ public class TimelineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-        client = TwitterApp.getRestClient();
+
 
         fragmentTweetsList = (TweetsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_timeline);
 
@@ -50,7 +44,8 @@ public class TimelineActivity extends AppCompatActivity {
 
             @Override
             public void onRefresh() {
-                populateTimeline();
+               // populateTimeline();
+                swipeContainer.setRefreshing(false);
             }
         });
     }
@@ -59,7 +54,7 @@ public class TimelineActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         miActionProgressItem = menu.findItem(R.id.miActionProgress);
         ProgressBar v = (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
-        populateTimeline();
+//        populateTimeline();
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -97,47 +92,5 @@ public class TimelineActivity extends AppCompatActivity {
         }
     }
 
-    private void populateTimeline(){
-        showProgressBar();
-        client.getHomeTimeline(new JsonHttpResponseHandler() {
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                log.d("TwitterClient", response.toString());
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                hideProgressBar();
-                log.d("TwitterClient", response.toString());
-                //tweetAdapter.clear(); //TODO: figure out how to do this stuff from other method.
-                fragmentTweetsList.addItems(response);
-                swipeContainer.setRefreshing(false);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                hideProgressBar();
-                log.d("TwitterClient", responseString);
-                throwable.printStackTrace();
-                swipeContainer.setRefreshing(false);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                hideProgressBar();
-                log.d("TwitterClient", errorResponse.toString());
-                throwable.printStackTrace();
-                swipeContainer.setRefreshing(false);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                hideProgressBar();
-                log.d("TwitterClient", errorResponse.toString());
-                throwable.printStackTrace();
-                swipeContainer.setRefreshing(false);
-            }
-        });
-    }
 }
