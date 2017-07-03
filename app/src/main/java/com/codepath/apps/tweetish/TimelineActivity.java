@@ -2,10 +2,11 @@ package com.codepath.apps.tweetish;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
@@ -14,7 +15,7 @@ import com.codepath.apps.tweetish.models.Tweet;
 
 import org.parceler.Parcels;
 
-import fragments.TweetsListFragment;
+import fragments.TweetsPagerAdapter;
 
 public class TimelineActivity extends AppCompatActivity {
 
@@ -24,30 +25,35 @@ public class TimelineActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeContainer;
     MenuItem miActionProgressItem;
 
-    TweetsListFragment fragmentTweetsList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
+        //get viewpager
+        ViewPager vpager = (ViewPager) findViewById(R.id.viewpager);
 
-        fragmentTweetsList = (TweetsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_timeline);
+        //set adapter for pager
+        vpager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager(), this));
+
+        // setup the tabLayout to use viewpager
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(vpager);
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        setSupportActionBar(toolbar);
-
-        this.swipeContainer = (SwipeRefreshLayout) findViewById(R.id.srlTimeline);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
-
-            @Override
-            public void onRefresh() {
-               // populateTimeline();
-                swipeContainer.setRefreshing(false);
-            }
-        });
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        this.swipeContainer = (SwipeRefreshLayout) findViewById(R.id.srlTimeline);
+//        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+//
+//            @Override
+//            public void onRefresh() {
+//               // populateTimeline();
+//                swipeContainer.setRefreshing(false);
+//            }
+//        });
     }
 
     @Override
