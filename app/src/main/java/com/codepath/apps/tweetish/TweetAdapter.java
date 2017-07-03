@@ -26,9 +26,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
     private List<Tweet> mTweets;
     Context context;
 
-    public TweetAdapter(List<Tweet> tweets, TimelineActivity timelineActivity){
+    public TweetAdapter(List<Tweet> tweets){
         mTweets = tweets;
-        context = timelineActivity;//TODO: ask about this context stuff
+        //context = timelineActivity;//TODO: ask about this context stuff
     }
 
     public void clear(){

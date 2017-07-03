@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,13 +14,11 @@ import com.codepath.apps.tweetish.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
-import java.util.ArrayList;
-
 import cz.msebera.android.httpclient.Header;
+import fragments.TweetsListFragment;
 
 import static com.loopj.android.http.AsyncHttpClient.log;
 
@@ -30,11 +26,11 @@ public class TimelineActivity extends AppCompatActivity {
 
     public static int REQUEST_CODE = 10;//TODO:find if this is a good request code
     private TwitterClient client;
-    TweetAdapter tweetAdapter;
-    ArrayList<Tweet> tweets;
-    RecyclerView rvTweets;
+
     private SwipeRefreshLayout swipeContainer;
     MenuItem miActionProgressItem;
+
+    TweetsListFragment fragmentTweetsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +38,8 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
         client = TwitterApp.getRestClient();
 
-        rvTweets = (RecyclerView) findViewById(R.id.rvTweet);
-        tweets = new ArrayList<>();
-        tweetAdapter = new TweetAdapter(tweets, this);
-        rvTweets.setLayoutManager(new LinearLayoutManager(this));
-        rvTweets.setAdapter(tweetAdapter);
+        fragmentTweetsList = (TweetsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_timeline);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -95,9 +88,9 @@ public class TimelineActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             // Extract name value from result extras
             Tweet tweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
-            tweets.add(0,tweet);
-            tweetAdapter.notifyItemInserted(0);
-            rvTweets.scrollToPosition(0);
+//            tweets.add(0,tweet);
+//            tweetAdapter.notifyItemInserted(0);
+//            rvTweets.scrollToPosition(0);
         }
         else{
             //TODO: check if an else statement should be added here.
@@ -117,17 +110,8 @@ public class TimelineActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 hideProgressBar();
                 log.d("TwitterClient", response.toString());
-                tweetAdapter.clear();
-                for(int i = 0; i < response.length();++i){
-                    try{
-                        Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
-                        tweets.add(tweet);
-                        tweetAdapter.notifyItemInserted(tweets.size() - 1);
-                    }
-                    catch (JSONException e){
-                        e.printStackTrace();
-                    }
-                }
+                //tweetAdapter.clear(); //TODO: figure out how to do this stuff from other method.
+                fragmentTweetsList.addItems(response);
                 swipeContainer.setRefreshing(false);
             }
 
