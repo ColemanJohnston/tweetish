@@ -53,7 +53,7 @@ public class ComposeActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
