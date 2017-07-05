@@ -24,10 +24,19 @@ import java.util.List;
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
     private List<Tweet> mTweets;
+    private
     Context context;
+    private TweetAdapterListener mListener;
 
-    public TweetAdapter(List<Tweet> tweets){
+
+    public interface TweetAdapterListener{
+        public void onItemSelected(View view, int position);
+    }
+
+
+    public TweetAdapter(List<Tweet> tweets, TweetAdapterListener listener){
         mTweets = tweets;
+        mListener = listener;
         //context = timelineActivity;//TODO: ask about this context stuff
     }
 
@@ -93,8 +102,17 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                     onRetweet(v);
                 }
             });
-            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListener != null){
+                        int position = getAdapterPosition();
+                        mListener.onItemSelected(v, position);
+                    }
+                }
+            });
         }
+
 
         @Override
         public void onClick(View v) {
