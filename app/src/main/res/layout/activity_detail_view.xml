@@ -6,17 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.codepath.apps.tweetish.DetailViewActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        app:titleTextColor="@android:color/black"
-        tools:layout_editor_absoluteY="0dp"/>
-
     <ImageView
         android:id="@+id/ivProfileImage"
         android:layout_width="112dp"

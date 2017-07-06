@@ -25,7 +25,12 @@ import java.util.ArrayList;
 public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAdapterListener{
 
     public interface TweetSelectedListener{
-        public void onTweetSelected(Tweet tweet);
+        void onTweetSelected(Tweet tweet);
+    }
+
+    public interface NetworkCallListener{
+        void onNetworkCallFinish();
+        void onNetworkCallStart();
     }
 
     // Fields

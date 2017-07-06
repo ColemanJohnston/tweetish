@@ -18,11 +18,11 @@ import org.parceler.Parcels;
 import fragments.TweetsListFragment;
 import fragments.TweetsPagerAdapter;
 
-public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener{
+public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener, TweetsListFragment.NetworkCallListener{
 
     public static int REQUEST_CODE = 10;//TODO:find if this is a good request code
 
-
+    private int networkCallCount;
     private SwipeRefreshLayout swipeContainer;
     MenuItem miActionProgressItem;
 
@@ -31,21 +31,22 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        networkCallCount = 0;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
         //get viewpager
-        ViewPager vpager = (ViewPager) findViewById(R.id.viewpager);
+//        ViewPager vpager = (ViewPager) findViewById(R.id.viewpager);
 
         //set adapter for pager
-
-        adapterViewPager = new TweetsPagerAdapter(getSupportFragmentManager(), this);
-        vpager.setAdapter(adapterViewPager);
-
-        // setup the tabLayout to use viewpager
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(vpager);
-
+//// TODO: Moved to onprepareoptionsmenu vvvvvvvvvvv
+//        adapterViewPager = new TweetsPagerAdapter(getSupportFragmentManager(), this);
+//        vpager.setAdapter(adapterViewPager);
+//
+//        // setup the tabLayout to use viewpager
+//        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+//        tabLayout.setupWithViewPager(vpager);
+// TODO Moved to onprepareoptionsmenu ^^^^^^^^^^^^^
 
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
@@ -65,8 +66,30 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         miActionProgressItem = menu.findItem(R.id.miActionProgress);
         ProgressBar v = (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
 //        populateTimeline();
+        ViewPager vpager = (ViewPager) findViewById(R.id.viewpager);
+        adapterViewPager = new TweetsPagerAdapter(getSupportFragmentManager(), this);
+        vpager.setAdapter(adapterViewPager);
+
+        // setup the tabLayout to use viewpager
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(vpager);
         return super.onPrepareOptionsMenu(menu);
     }
+
+    @Override
+    public void onNetworkCallStart() {
+        networkCallCount++;
+        showProgressBar();
+    }
+
+    @Override
+    public void onNetworkCallFinish() {
+        networkCallCount--;
+        if(networkCallCount < 1){
+            hideProgressBar();
+        }
+    }
+
 
     public void showProgressBar(){
         miActionProgressItem.setVisible(true);

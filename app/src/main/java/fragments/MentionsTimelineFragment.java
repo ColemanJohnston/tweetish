@@ -32,16 +32,20 @@ public class MentionsTimelineFragment extends TweetsListFragment {
 
     private void populateTimeline(){
 //        showProgressBar();
+        ((NetworkCallListener) getActivity()).onNetworkCallStart();
+        //TODO: put show progress bar here
         client.getMentionsTimeline(new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                ((NetworkCallListener) getActivity()).onNetworkCallFinish();
                 log.d("TwitterClient", response.toString());
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 //                hideProgressBar();
+                ((NetworkCallListener) getActivity()).onNetworkCallFinish();
                 log.d("TwitterClient", response.toString());
                 //tweetAdapter.clear(); //TODO: figure out how to do this stuff from other method.
                 addItems(response);
@@ -51,6 +55,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 //                hideProgressBar();
+                ((NetworkCallListener) getActivity()).onNetworkCallFinish();
                 log.d("TwitterClient", responseString);
                 throwable.printStackTrace();
 //                swipeContainer.setRefreshing(false);
@@ -59,6 +64,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
 //                hideProgressBar();
+                ((NetworkCallListener) getActivity()).onNetworkCallFinish();
                 log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
 //                swipeContainer.setRefreshing(false);
@@ -67,6 +73,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
 //                hideProgressBar();
+                ((NetworkCallListener) getActivity()).onNetworkCallFinish();
                 log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
 //                swipeContainer.setRefreshing(false);
