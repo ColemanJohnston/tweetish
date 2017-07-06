@@ -2,6 +2,7 @@ package com.codepath.apps.tweetish;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +14,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.codepath.apps.tweetish.models.Tweet;
 
-import org.parceler.Parcels;
-
 import java.util.List;
 
 /**
@@ -24,7 +23,6 @@ import java.util.List;
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
     private List<Tweet> mTweets;
-    private
     Context context;
     private TweetAdapterListener mListener;
 
@@ -79,7 +77,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         return mTweets.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder{
 
         public ImageView ivProfileImage;
         public TextView tvUsername;
@@ -99,7 +97,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
             ibRetweet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onRetweet(v);
+                    onReply(v);
                 }
             });
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -111,32 +109,25 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                     }
                 }
             });
+
+            ivProfileImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {// TODO: ask about restyling the way that I do this(Same issue here as in OnRetweet. I may have to apply listener pattern on both)
+                    Intent i = new Intent(context, ProfileActivity.class);
+                    i.putExtra("screen_name",tvScreenName.getText().toString());
+                    context.startActivity(i);
+                }
+            });
         }
 
-
-        @Override
-        public void onClick(View v) {
-            int position = getAdapterPosition();
-
-            if(position != RecyclerView.NO_POSITION){
-                Tweet tweet = mTweets.get(position);
-
-                Intent intent = new Intent(context,DetailViewActivity.class);
-
-                intent.putExtra("tweet", Parcels.wrap(tweet));
-
-                context.startActivity(intent);
-            }
-        }
-
-        public void onRetweet(View v){//TODO: ask about restyling the way that I
+        public void onReply(View v){//TODO: ask about restyling the way that I implement this method (ouch I may have to completly change how this is happening because of the reuse of these in profile view)
             Intent i = new Intent(context,ComposeActivity.class);
 
             i.putExtra("replyUsername",tvScreenName.getText().toString());
 
-            TimelineActivity timelineActivity = (TimelineActivity) context;
+            AppCompatActivity activity = (AppCompatActivity) context;
 
-            timelineActivity.startActivityForResult(i,TimelineActivity.REQUEST_CODE);
+            activity.startActivityForResult(i,TimelineActivity.REQUEST_CODE);
         }
     }
 }

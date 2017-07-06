@@ -15,15 +15,17 @@ import com.codepath.apps.tweetish.models.Tweet;
 
 import org.parceler.Parcels;
 
+import fragments.TweetsListFragment;
 import fragments.TweetsPagerAdapter;
 
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener{
 
     public static int REQUEST_CODE = 10;//TODO:find if this is a good request code
 
 
     private SwipeRefreshLayout swipeContainer;
     MenuItem miActionProgressItem;
+
 
 
 
@@ -105,4 +107,10 @@ public class TimelineActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    @Override
+    public void onTweetSelected(Tweet tweet) {
+        Intent intent = new Intent(this,DetailViewActivity.class);
+        intent.putExtra("tweet", Parcels.wrap(tweet));
+        this.startActivity(intent);
+    }
 }

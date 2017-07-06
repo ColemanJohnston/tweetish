@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.codepath.apps.tweetish.R;
 import com.codepath.apps.tweetish.TweetAdapter;
@@ -25,13 +24,14 @@ import java.util.ArrayList;
 
 public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAdapterListener{
 
+    public interface TweetSelectedListener{
+        public void onTweetSelected(Tweet tweet);
+    }
 
     // Fields
     TweetAdapter tweetAdapter;
     ArrayList<Tweet> tweets;
     RecyclerView rvTweets;
-
-
 
     // inflation happens inside OnCreateView
     @Nullable
@@ -67,6 +67,7 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
     @Override
     public void onItemSelected(View view, int position) {
         Tweet tweet = tweets.get(position);
-        Toast.makeText(getContext(),tweet.body,Toast.LENGTH_SHORT).show();
+        ((TweetSelectedListener) getActivity()).onTweetSelected(tweet);
     }
+
 }
