@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,17 +50,12 @@ public class ComposeActivity extends AppCompatActivity {
             replyUsername += " "; //TODO: check if this space messes up the 140 characters thing
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        //setSupportActionBar(toolbar);
-
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO:send tweet and go back to timeline
                 //TODO: think about checking if the user is trying to send an empty tweet.
                 showProgressBar();
-
                 TwitterClient client = new TwitterClient(context);
                 client.sendTweet(replyUsername + etTweet.getText().toString(), new JsonHttpResponseHandler(){
                     @Override
