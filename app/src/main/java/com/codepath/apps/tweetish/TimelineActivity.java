@@ -26,7 +26,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
     private SwipeRefreshLayout swipeContainer;
     MenuItem miActionProgressItem;
 
-
+    TweetsPagerAdapter adapterViewPager;
 
 
     @Override
@@ -38,7 +38,9 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         ViewPager vpager = (ViewPager) findViewById(R.id.viewpager);
 
         //set adapter for pager
-        vpager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager(), this));
+
+        adapterViewPager = new TweetsPagerAdapter(getSupportFragmentManager(), this);
+        vpager.setAdapter(adapterViewPager);
 
         // setup the tabLayout to use viewpager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
@@ -91,9 +93,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             // Extract name value from result extras
             Tweet tweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
-//            tweets.add(0,tweet);
-//            tweetAdapter.notifyItemInserted(0);
-//            rvTweets.scrollToPosition(0);
+            ((TweetsListFragment) adapterViewPager.getRegisteredFragment(0)).appendTweet(tweet);//add tweet to timeline
         }
         else{
             //TODO: check if an else statement should be added here.

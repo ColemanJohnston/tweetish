@@ -50,14 +50,22 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
         return v;
     }
 
+    public void appendTweet(Tweet tweet){
+        tweets.add(0,tweet);
+        tweetAdapter.notifyItemInserted(0);
+        rvTweets.scrollToPosition(0);
+    }
+
     public void addItems(JSONArray response){
         tweetAdapter.clear();
         try{
             for(int i = 0; i < response.length(); ++i){
                 Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
                 tweets.add(tweet);
-                tweetAdapter.notifyItemInserted(tweets.size() - 1);
+                //tweetAdapter.notifyItemInserted(tweets.size() - 1);
             }
+            tweetAdapter.notifyDataSetChanged(); //switched
+            rvTweets.scrollToPosition(0);
         }
         catch (JSONException e){
             e.printStackTrace();
