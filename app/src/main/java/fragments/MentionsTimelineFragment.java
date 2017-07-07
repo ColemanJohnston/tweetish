@@ -29,9 +29,12 @@ public class MentionsTimelineFragment extends TweetsListFragment {
         populateTimeline();
     }
 
+    @Override
+    public void refresh() {
+        populateTimeline();
+    }
 
     private void populateTimeline(){
-//        showProgressBar();
         ((NetworkCallListener) getActivity()).onNetworkCallStart();
         //TODO: put show progress bar here
         client.getMentionsTimeline(new JsonHttpResponseHandler() {
@@ -44,41 +47,31 @@ public class MentionsTimelineFragment extends TweetsListFragment {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                hideProgressBar();
                 ((NetworkCallListener) getActivity()).onNetworkCallFinish();
                 log.d("TwitterClient", response.toString());
-                //tweetAdapter.clear(); //TODO: figure out how to do this stuff from other method.
                 addItems(response);
-//                swipeContainer.setRefreshing(false);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                hideProgressBar();
                 ((NetworkCallListener) getActivity()).onNetworkCallFinish();
                 log.d("TwitterClient", responseString);
                 throwable.printStackTrace();
-//                swipeContainer.setRefreshing(false);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                hideProgressBar();
                 ((NetworkCallListener) getActivity()).onNetworkCallFinish();
                 log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
-//                swipeContainer.setRefreshing(false);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-//                hideProgressBar();
                 ((NetworkCallListener) getActivity()).onNetworkCallFinish();
                 log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
-//                swipeContainer.setRefreshing(false);
             }
         });
     }
-
 }

@@ -3,6 +3,7 @@ package fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
  * Created by colemanmav on 7/3/17.
  */
 
-public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAdapterListener{
+public abstract class TweetsListFragment extends Fragment implements TweetAdapter.TweetAdapterListener{
 
     public interface TweetSelectedListener{
         void onTweetSelected(Tweet tweet);
@@ -37,6 +38,7 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
     TweetAdapter tweetAdapter;
     ArrayList<Tweet> tweets;
     RecyclerView rvTweets;
+    SwipeRefreshLayout swipeContainer;
 
     // inflation happens inside OnCreateView
     @Nullable
@@ -51,9 +53,19 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
         rvTweets.setLayoutManager(new LinearLayoutManager(getContext()));
         rvTweets.setAdapter(tweetAdapter);
 
+        this.swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.srlTweetsList);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+            @Override
+            public void onRefresh() {
+                refresh();
+                swipeContainer.setRefreshing(false);
+            }
+        });
 
         return v;
     }
+
+    public abstract void refresh();
 
     public void appendTweet(Tweet tweet){
         tweets.add(0,tweet);

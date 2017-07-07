@@ -38,6 +38,10 @@ public class UserTimelineFragment extends TweetsListFragment {
         populateTimeline();
     }
 
+    @Override
+    public void refresh() {
+        populateTimeline();
+    }
 
     private void populateTimeline(){
         ( (NetworkCallListener) getActivity() ).onNetworkCallStart();
@@ -55,9 +59,7 @@ public class UserTimelineFragment extends TweetsListFragment {
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 ( (NetworkCallListener) getActivity() ).onNetworkCallFinish();
                 log.d("TwitterClient", response.toString());
-                //tweetAdapter.clear(); //TODO: figure out how to do this stuff from other method.
                 addItems(response);
-//                swipeContainer.setRefreshing(false);
             }
 
             @Override
@@ -65,7 +67,6 @@ public class UserTimelineFragment extends TweetsListFragment {
                 ( (NetworkCallListener) getActivity() ).onNetworkCallFinish();
                 log.d("TwitterClient", responseString);
                 throwable.printStackTrace();
-//                swipeContainer.setRefreshing(false);
             }
 
             @Override
@@ -73,7 +74,6 @@ public class UserTimelineFragment extends TweetsListFragment {
                 ( (NetworkCallListener) getActivity() ).onNetworkCallFinish();
                 log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
-//                swipeContainer.setRefreshing(false);
             }
 
             @Override
@@ -81,7 +81,6 @@ public class UserTimelineFragment extends TweetsListFragment {
                 ( (NetworkCallListener) getActivity() ).onNetworkCallFinish();
                 log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
-//                swipeContainer.setRefreshing(false);
             }
         });
     }
