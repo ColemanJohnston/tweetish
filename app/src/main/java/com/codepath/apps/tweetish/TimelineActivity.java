@@ -2,13 +2,13 @@ package com.codepath.apps.tweetish;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.tweetish.models.Tweet;
 
 import org.parceler.Parcels;
@@ -32,14 +32,6 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         networkCallCount = 0;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-//        this.swipeContainer = (SwipeRefreshLayout) findViewById(R.id.srlTimeline);
-//        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
-//            @Override
-//            public void onRefresh() {
-//               // populateTimeline();
-//                swipeContainer.setRefreshing(false);
-//            }
-//        });
     }
 
     @Override
@@ -54,8 +46,8 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         vpager.setAdapter(adapterViewPager);
 
         // setup the tabLayout to use viewpager
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(vpager);
+        PagerSlidingTabStrip tabsStrip = (PagerSlidingTabStrip) findViewById(R.id.sliding_tabs);
+        tabsStrip.setViewPager(vpager);
         return super.onPrepareOptionsMenu(menu);
     }
 
